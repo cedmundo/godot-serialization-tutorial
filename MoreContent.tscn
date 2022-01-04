@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://PersistentObject.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.968627, 0.384314, 0.0666667, 1 )
+
+[sub_resource type="BoxShape" id=7]
+
+[node name="MoreContent" type="RigidBody" groups=["persist"]]
+script = ExtResource( 1 )
+as_resource = true
+resource_name = "res://MoreContent.tscn"
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 7 )

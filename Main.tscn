@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://PersistentObject.gd" type="Script" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.380392, 0.380392, 0.380392, 1 )
@@ -39,7 +40,7 @@ shadow_enabled = true
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.846509, 0.532374, 0, -0.532374, 0.846509, 0, 13.0455, 23.7508 )
 
-[node name="Player" type="KinematicBody" parent="." groups=["persist"]]
+[node name="Player" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.90837, 0 )
 script = ExtResource( 1 )
 
@@ -52,6 +53,7 @@ material/0 = SubResource( 4 )
 
 [node name="PersistentBox" type="RigidBody" parent="." groups=["persist"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.71631, 1.02626, -4.11504 )
+script = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="PersistentBox"]
 mesh = SubResource( 5 )
@@ -62,6 +64,7 @@ shape = SubResource( 7 )
 
 [node name="PersistentBox2" type="RigidBody" parent="." groups=["persist"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.39539, 1.02626, 7.62042 )
+script = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="PersistentBox2"]
 mesh = SubResource( 5 )
@@ -72,20 +75,11 @@ shape = SubResource( 7 )
 
 [node name="PersistentBox3" type="RigidBody" parent="." groups=["persist"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.57504, 1.02626, -4.06644 )
+script = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="PersistentBox3"]
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PersistentBox3"]
-shape = SubResource( 7 )
-
-[node name="PersistentBox4" type="RigidBody" parent="." groups=["persist"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.73418, 1.02626, 6.83233 )
-
-[node name="MeshInstance" type="MeshInstance" parent="PersistentBox4"]
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
-
-[node name="CollisionShape" type="CollisionShape" parent="PersistentBox4"]
 shape = SubResource( 7 )
