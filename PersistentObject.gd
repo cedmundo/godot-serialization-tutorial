@@ -1,13 +1,21 @@
-extends Spatial
+class_name PersistentObject
+extends RigidBody
 
 export(bool) var as_resource := false
 export(String) var resource_name := ""
 
-func encode_vec3(v: Vector3) -> Dictionary:
+onready var original_spawn : Transform = global_transform
+
+static func encode_vec3(v: Vector3) -> Dictionary:
 	return {"x": v.x, "y": v.y, "z": v.z}
 	
-func decode_vec3(d: Dictionary) -> Vector3:
+static func decode_vec3(d: Dictionary) -> Vector3:
 	return Vector3(d["x"], d["y"], d["z"])
+
+func _move_to_original_spawn():
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	global_transform = original_spawn
 
 func to_data_dict():
 	var data : Dictionary = {
@@ -25,6 +33,7 @@ func to_data_dict():
 	else:
 		data["path"] = get_path()
 		
+	original_spawn = global_transform
 	return data
 
 func from_data_dict(data):
@@ -32,3 +41,10 @@ func from_data_dict(data):
 	global_transform.basis.x = decode_vec3(data["rot"]["x"])
 	global_transform.basis.y = decode_vec3(data["rot"]["y"])
 	global_transform.basis.z = decode_vec3(data["rot"]["z"])
+	original_spawn = global_transform
+
+func kill():
+	if as_resource:
+		queue_free()
+	else:
+		_move_to_original_spawn()

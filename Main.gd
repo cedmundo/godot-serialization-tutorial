@@ -5,7 +5,7 @@ var more_content := preload("res://MoreContent.tscn")
 onready var player := $Player
 
 func _input(event):
-	if event.is_action_pressed("save"):
+	if event.is_action_pressed("save") and player.can_save:
 		print("Guardando partida ...")
 		save_game()
 		print("Partida guardada ...")
@@ -35,6 +35,12 @@ func load_game():
 	var save_file := File.new()
 	assert(save_file.open(file_name, File.READ) != FAILED)
 	
+	# Clean current state
+	var persistent_nodes = get_tree().get_nodes_in_group("persist")
+	for node in persistent_nodes:
+		if node.as_resource:
+			node.queue_free()
+	
 	while save_file.get_position() < save_file.get_len():
 		var node_data = parse_json(save_file.get_line())
 		if "path" in node_data:
@@ -54,3 +60,21 @@ func insert_content():
 	node.global_transform = player.global_transform
 	node.global_transform.origin.y = 5
 	
+
+func _on_DeadZone_body_entered(body):
+	if body.has_method("kill"):
+		body.kill()
+
+
+func _on_Player_load_last_game():
+	load_game()
+
+
+func _on_SafeZone_body_entered(body):
+	if body.has_method("set_can_save"):
+		body.set_can_save(true)
+
+
+func _on_SafeZone_body_exited(body):
+	if body.has_method("set_can_save"):
+		body.set_can_save(false)
