@@ -1,24 +1,19 @@
 extends Spatial
 
-const file_name := "user://default.save"
+var file_name := "user://default.save"
 var more_content := preload("res://MoreContent.tscn")
 onready var player := $Player
+onready var main_menu := $MainMenu
+onready var button_save := $HUD/ButtonSave
 
 func _input(event):
-	if event.is_action_pressed("save") and player.can_save:
-		print("Guardando partida ...")
-		save_game()
-		print("Partida guardada ...")
-		
-	if event.is_action_pressed("load"):
-		print("Cargando partida ...")
-		load_game()
-		print("Partida cargada ...")
-		
 	if event.is_action_pressed("insert"):
 		print("Insertando contenido ...")
 		insert_content()
 		print("Contenido insertado ...")
+		
+func _process(_delta):
+	button_save.visible = player.can_save
 		
 func save_game():
 	var save_file := File.new()
@@ -33,6 +28,9 @@ func save_game():
 	
 func load_game():
 	var save_file := File.new()
+	if not save_file.file_exists(file_name):
+		return
+		
 	assert(save_file.open(file_name, File.READ) != FAILED)
 	
 	# Clean current state
@@ -78,3 +76,25 @@ func _on_SafeZone_body_entered(body):
 func _on_SafeZone_body_exited(body):
 	if body.has_method("set_can_save"):
 		body.set_can_save(false)
+
+
+func _on_ButtonSlot1_pressed():
+	file_name = "user://slot1.save"
+	load_game()
+	main_menu.visible = false
+	
+
+func _on_ButtonSlot2_pressed():
+	file_name = "user://slot2.save"
+	load_game()
+	main_menu.visible = false
+	
+
+func _on_ButtonSlot3_pressed():
+	file_name = "user://slot3.save"
+	load_game()
+	main_menu.visible = false
+
+
+func _on_ButtonSave_pressed():
+	save_game()

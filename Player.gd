@@ -17,7 +17,6 @@ var can_save := false
 var as_resource := false
 var velocity := Vector3.ZERO
 onready var mesh_instance := $MeshInstance
-onready var safe_zone_label := $SafeZoneLabel
 
 func _ready():
 	_change_color()
@@ -43,11 +42,6 @@ func _process(_delta):
 	if Input.is_action_just_pressed("change_color"):
 		selected_color += 1
 		_change_color()
-		
-	if can_save:
-		safe_zone_label.text = "Presiona F1 para guardar"
-	else:
-		safe_zone_label.text = ""
 
 func to_data_dict():
 	return {
