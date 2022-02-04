@@ -1,6 +1,7 @@
 extends Spatial
 
 var file_name := "user://default.save"
+var file_password := OS.get_unique_id()
 var more_content := preload("res://MoreContent.tscn")
 onready var player := $Player
 onready var main_menu := $MainMenu
@@ -17,7 +18,7 @@ func _process(_delta):
 		
 func save_game():
 	var save_file := File.new()
-	assert(save_file.open(file_name, File.WRITE) != FAILED)
+	assert(save_file.open_encrypted_with_pass(file_name, File.WRITE, file_password) != FAILED)
 	
 	var persistent_nodes := get_tree().get_nodes_in_group("persist")
 	for node in persistent_nodes:
@@ -31,7 +32,7 @@ func load_game():
 	if not save_file.file_exists(file_name):
 		return
 		
-	assert(save_file.open(file_name, File.READ) != FAILED)
+	assert(save_file.open_encrypted_with_pass(file_name, File.READ, file_password) != FAILED)
 	
 	# Clean current state
 	var persistent_nodes = get_tree().get_nodes_in_group("persist")
